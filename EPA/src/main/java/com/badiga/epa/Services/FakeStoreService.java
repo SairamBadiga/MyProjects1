@@ -1,6 +1,6 @@
 package com.badiga.epa.Services;
 
-import com.badiga.epa.DTOS.FakeStoreProductDto;
+import com.badiga.epa.DTOS.ProductDto;
 import com.badiga.epa.Exceptions.ProductNotFoundException;
 import com.badiga.epa.Models.Product;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("FakeStoreService")
-public class FakeStoreService implements EPAServices{
+public class FakeStoreService implements ProductServices {
 
     public RestTemplate restTemplate;
 
@@ -20,10 +20,10 @@ public class FakeStoreService implements EPAServices{
     }
     @Override
     public List<Product> getProducts() {
-        FakeStoreProductDto[] products = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+        ProductDto[] products = restTemplate.getForObject("https://fakestoreapi.com/products", ProductDto[].class);
         List<Product> productList = new ArrayList<Product>();
         for(int i = 0; i<products.length; i++){
-            productList.add(products[i].toProduct());
+            //productList.add(products[i].toProduct());
         }
         return productList;
 
@@ -31,19 +31,19 @@ public class FakeStoreService implements EPAServices{
 
     @Override
     public Product getProduct(int id) throws ProductNotFoundException {
-        FakeStoreProductDto product = restTemplate.getForObject("https://fakestoreapi.com/products/"+id, FakeStoreProductDto.class);
+        ProductDto product = restTemplate.getForObject("https://fakestoreapi.com/products/"+id, ProductDto.class);
         if(product ==null){
             throw new ProductNotFoundException("Product id is null");
         }
         System.out.println(product.getId());
-        return product.toProduct();
+        return null;
     }
 
     @Override
-    public Product addProduct(Product product) {
-        FakeStoreProductDto added_product = restTemplate.postForObject("https://fakestoreapi.com/products", product, FakeStoreProductDto.class);
+    public Product addProduct(ProductDto product) {
+        ProductDto added_product = restTemplate.postForObject("https://fakestoreapi.com/products", product, ProductDto.class);
         System.out.println(added_product.getId());
-        return added_product.toProduct();
+        return null;
 
     }
 }
