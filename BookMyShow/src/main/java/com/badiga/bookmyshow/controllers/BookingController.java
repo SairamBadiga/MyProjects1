@@ -16,7 +16,6 @@ import java.util.List;
 @Controller
 public class BookingController {
     private BookingService bookingService;
-    public BookingController() {}
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
